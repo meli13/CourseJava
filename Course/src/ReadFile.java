@@ -8,7 +8,7 @@ public class ReadFile {
 	
 	
 	public void ReadTxt(String txt) throws FileNotFoundException{
-		List<String> students = new ArrayList();
+		List<String> students = new ArrayList<String>();
 		File file = new File(txt);
 		Scanner sc = new Scanner(file);
 		
