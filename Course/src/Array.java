@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Array {
 	
-	public void CreateArray() {
+	public void createArray() {
 	
 		Scanner in = new Scanner(System.in);
 		System.out.println("Give us a size");

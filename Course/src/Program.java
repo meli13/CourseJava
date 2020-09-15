@@ -6,15 +6,15 @@ public class Program {
 		
 		/* ARRAY */
 		//Array array = new Array();
-		//array.CreateArray();
+		//array.createArray();
 		
 		/* READ FILE */
 		//ReadFile read = new ReadFile();
-		//read.ReadTxt("students");
+		//read.readTxt("students");
 		
 		/* Stack */
 		//Stack stack = new Stack();
-		//stack.StackList();
+		//stack.stackList();
 	}
 
 }

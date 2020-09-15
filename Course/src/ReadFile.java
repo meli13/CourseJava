@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class ReadFile {
 	
 	
-	public void ReadTxt(String txt) throws FileNotFoundException{
+	public void readTxt(String txt) throws FileNotFoundException{
 		List<String> students = new ArrayList<String>();
 		File file = new File(txt);
 		Scanner sc = new Scanner(file);

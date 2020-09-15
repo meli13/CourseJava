@@ -3,7 +3,7 @@ import java.util.LinkedList;
 
 public class Stack {
 	
-	public void StackList() {
+	public void stackList() {
 		LinkedList<String> names = new LinkedList<String>();
 		names.push("Melissa");
 		names.push("Orlando");
