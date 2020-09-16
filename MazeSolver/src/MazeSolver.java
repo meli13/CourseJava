@@ -1,97 +1,132 @@
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class MazeSolver {
 	
-	static int[][] maze = {
-			{0, 0, 1, 1},
-			{1, 1, 0, 1},
-			{0, 1, 1, 1}
-	};
-	
-	//0 = wall
-	//1 = path
-	//2 = destination
-	
-	static LinkedList<Position> path = new LinkedList<Position>();
-	
 	public static void main(String[] args) {
-		Position p = new Position(0, 3);
-		path.push(p);
 		
+		ArrayList<Maze> mazes = new ArrayList<Maze>();
+				
+		//0 = wall
+		//1 = path
+		//2 = destination
 		
-		//path.peek();
+		//Maze 1
+		Maze m1 = new Maze();
+		
+		int[][] m1_maze = {
+			{1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0},
+			{0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0},
+			{0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1},
+			{1, 1, 1, 2, 0, 1, 0, 1, 0, 1, 0},
+			{0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0},
+			{0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1}			
+		};
+		m1.maze = m1_maze;
+		m1.start = new Position(4,8);
+		m1.path = new LinkedList<Position>();
+		
+		//Maze 2
+		Maze m2 = new Maze();
+		
+		int[][] m2_maze = {
+			{1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0},
+			{0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0},
+			{0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1},
+			{1, 1, 1, 2, 0, 1, 0, 1, 0, 1, 0},
+			{0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0},
+			{0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1}			
+		};
+		m2.maze = m2_maze;
+		m2.start = new Position(4,8);
+		m2.path = new LinkedList<Position>();
+		
+		mazes.add(m1);
+		mazes.add(m2);
+		
+		int i = 0;
+		while(i < mazes.size()) {
+			if(solveMaze(mazes.get(i))) {
+				System.out.println("You won!");
+			} else {
+				System.out.println("No path");
+			}
+			i++;
+		}
+	}
+	
+	private static boolean solveMaze(Maze m) {
+		
+		Position p = m.start;
+		m.path.push(p);
 		
 		while(true) {
 			
-			int x = path.peek().x;
-			int y = path.peek().y;
+			int x = m.path.peek().x;
+			int y = m.path.peek().y;
 			
-			//System.out.println(x + " " + y + " ");
-			
-			maze[y][x] = 0;
+			m.maze[y][x] = 0;
 			
 			//down
-			if(isValid(y + 1, x)) {
-				if(maze[y + 1][x] == 2) {
-					System.out.println("Moved down. You won!");
-					return;
-				} else if(maze[y + 1][x] == 1) {
+			if(isValid(y + 1, x, m)) {
+				if(m.maze[y + 1][x] == 2) {
 					System.out.println("Moved down");
-					path.push(new Position(y + 1, x));
+					return true;
+				} else if(m.maze[y + 1][x] == 1) {
+					System.out.println("Moved down");
+					m.path.push(new Position(y + 1, x));
 					continue;
 				}
 			}
 			
 			//left
-			if(isValid(y, x - 1)) {
-				if(maze[y][x - 1] == 2) {
-					System.out.println("Moved left. You won!");
-					return;
-				} else if(maze[y][x - 1] == 1) {
+			if(isValid(y, x - 1, m)) {
+				if(m.maze[y][x - 1] == 2) {
 					System.out.println("Moved left");
-					path.push(new Position(y, x - 1));
+					return true;
+				} else if(m.maze[y][x - 1] == 1) {
+					System.out.println("Moved left");
+					m.path.push(new Position(y, x - 1));
 					continue;
 				}
 			}
-			
-			
+					
 			//up
-			if(isValid(y - 1, x)) {
-				if(maze[y - 1][x] == 2) {
-					System.out.println("Moved up. You won!");
-					return;
-				} else if(maze[y - 1][x] == 1) {
+			if(isValid(y - 1, x, m)) {
+				if(m.maze[y - 1][x] == 2) {
 					System.out.println("Moved up");
-					path.push(new Position(y - 1, x));
+					return true;
+				} else if(m.maze[y - 1][x] == 1) {
+					System.out.println("Moved up");
+					m.path.push(new Position(y - 1, x));
 					continue;
 				}
 			}
 			
 			//right
-			if(isValid(y, x + 1)) {
-				if(maze[y][x + 1] == 2) {
-					System.out.println("Moved right. You won!");
-					return;
-				} else if(maze[y][x + 1] == 1) {
+			if(isValid(y, x + 1, m)) {
+				if(m.maze[y][x + 1] == 2) {
 					System.out.println("Moved right");
-					path.push(new Position(y, x + 1));
+					return true;
+				} else if(m.maze[y][x + 1] == 1) {
+					System.out.println("Moved right");
+					m.path.push(new Position(y, x + 1));
 					continue;
 				}
 			}
 			
 			
-			path.pop();
+			m.path.pop();
 			System.out.println("Moved back");
-			if(path.size() <= 0) {
-				System.out.println("No path");
-				return;
+			if(m.path.size() <= 0) {
+				return false;
 			}
 		}
 		
 	}
-	
-	public static boolean isValid(int y, int x) {
-		if(y < 0 || y >= maze.length || x < 0 || x >= maze[y].length) {
+
+	public static boolean isValid(int y, int x, Maze m) {
+		if(y < 0 || y >= m.maze.length || x < 0 || x >= m.maze[y].length) {
 			return false;
 		}
 		return true;
