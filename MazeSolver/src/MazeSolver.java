@@ -12,11 +12,16 @@ public class MazeSolver {
 	
 	public static void main(String[] args) throws FileNotFoundException {
 		
-		ArrayList<Maze> mazes = readMazes();
+		ArrayList<Maze> mazes = readMazes(); //Read from file
+		ArrayList<Direction> directions = new ArrayList<Direction>();
 		
 		int i = 0;
 		while(i < mazes.size()) {
-			if(solveMaze(mazes.get(i))) {
+			Direction dir = solveMaze(mazes.get(i));
+			if(!dir.directions.isEmpty()) {
+				System.out.println("Solution maze " + (i + 1));
+				directions.add(dir);
+				showPath(dir);
 				System.out.println("You won!");
 			} else {
 				System.out.println("No path");
@@ -27,7 +32,7 @@ public class MazeSolver {
 	
 	private static ArrayList<Maze> readMazes() throws FileNotFoundException {
 		ArrayList<Maze> mazes = new ArrayList<Maze>();
-		
+			
 		Scanner in = new Scanner(new File("mazes.txt"));
 		
 		while(in.hasNext()) {
@@ -51,8 +56,9 @@ public class MazeSolver {
 		return mazes;
 	}
 
-	private static boolean solveMaze(Maze m) {
+	private static Direction solveMaze(Maze m) {
 		
+		Direction dir = new Direction();
 		Position p = m.start;
 		m.path.push(p);
 		
@@ -66,10 +72,12 @@ public class MazeSolver {
 			//down
 			if(isValid(y + 1, x, m)) {
 				if(m.maze[y + 1][x] == 2) {
-					System.out.println("Moved down");
-					return true;
+					//Moved down
+					dir.directions.add("Down");
+					return dir;
 				} else if(m.maze[y + 1][x] == 1) {
-					System.out.println("Moved down");
+					//Moved down
+					dir.directions.add("Down");
 					m.path.push(new Position(y + 1, x));
 					continue;
 				}
@@ -78,10 +86,12 @@ public class MazeSolver {
 			//left
 			if(isValid(y, x - 1, m)) {
 				if(m.maze[y][x - 1] == 2) {
-					System.out.println("Moved left");
-					return true;
+					//Moved left
+					dir.directions.add("Left");
+					return dir;
 				} else if(m.maze[y][x - 1] == 1) {
-					System.out.println("Moved left");
+					//Moved left
+					dir.directions.add("Left");
 					m.path.push(new Position(y, x - 1));
 					continue;
 				}
@@ -90,10 +100,12 @@ public class MazeSolver {
 			//up
 			if(isValid(y - 1, x, m)) {
 				if(m.maze[y - 1][x] == 2) {
-					System.out.println("Moved up");
-					return true;
+					//Moved up
+					dir.directions.add("Up");
+					return dir;
 				} else if(m.maze[y - 1][x] == 1) {
-					System.out.println("Moved up");
+					//Moved up
+					dir.directions.add("Up");
 					m.path.push(new Position(y - 1, x));
 					continue;
 				}
@@ -102,20 +114,23 @@ public class MazeSolver {
 			//right
 			if(isValid(y, x + 1, m)) {
 				if(m.maze[y][x + 1] == 2) {
-					System.out.println("Moved right");
-					return true;
+					//Moved right
+					dir.directions.add("Right");
+					return dir;
 				} else if(m.maze[y][x + 1] == 1) {
-					System.out.println("Moved right");
+					//Moved right
+					dir.directions.add("Right");
 					m.path.push(new Position(y, x + 1));
 					continue;
 				}
 			}
 			
-			
 			m.path.pop();
-			System.out.println("Moved back");
+			//Moved back
+			dir.directions.poll();
+			
 			if(m.path.size() <= 0) {
-				return false;
+				return dir;
 			}
 		}
 		
@@ -126,6 +141,13 @@ public class MazeSolver {
 			return false;
 		}
 		return true;
+	}
+	
+	private static void showPath(Direction dir) {
+		for(String direction: dir.directions) {
+			System.out.println(direction);
+		}
+		
 	}
 
 }
