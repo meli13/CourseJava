@@ -1,48 +1,18 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Arrays;
+import java.util.Scanner;
 
 public class MazeSolver {
 	
-	public static void main(String[] args) {
+	//0 = wall
+	//1 = path
+	//2 = destination
+	
+	public static void main(String[] args) throws FileNotFoundException {
 		
-		ArrayList<Maze> mazes = new ArrayList<Maze>();
-				
-		//0 = wall
-		//1 = path
-		//2 = destination
-		
-		//Maze 1
-		Maze m1 = new Maze();
-		
-		int[][] m1_maze = {
-			{1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0},
-			{0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0},
-			{0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1},
-			{1, 1, 1, 2, 0, 1, 0, 1, 0, 1, 0},
-			{0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0},
-			{0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1}			
-		};
-		m1.maze = m1_maze;
-		m1.start = new Position(4,8);
-		m1.path = new LinkedList<Position>();
-		
-		//Maze 2
-		Maze m2 = new Maze();
-		
-		int[][] m2_maze = {
-			{1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0},
-			{0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0},
-			{0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1},
-			{1, 1, 1, 2, 0, 1, 0, 1, 0, 1, 0},
-			{0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0},
-			{0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1}			
-		};
-		m2.maze = m2_maze;
-		m2.start = new Position(4,8);
-		m2.path = new LinkedList<Position>();
-		
-		mazes.add(m1);
-		mazes.add(m2);
+		ArrayList<Maze> mazes = readMazes();
 		
 		int i = 0;
 		while(i < mazes.size()) {
@@ -55,6 +25,32 @@ public class MazeSolver {
 		}
 	}
 	
+	private static ArrayList<Maze> readMazes() throws FileNotFoundException {
+		ArrayList<Maze> mazes = new ArrayList<Maze>();
+		
+		Scanner in = new Scanner(new File("mazes.txt"));
+		
+		while(in.hasNext()) {
+			Maze m = new Maze();
+			
+			int rows = Integer.parseInt(in.nextLine());
+			m.maze = new int[rows][];
+			
+			for(int i = 0; i < rows; i++) {
+				String line = in.nextLine();
+				m.maze[i] = Arrays.stream(line.split(", ")).mapToInt(Integer::parseInt).toArray();			
+			}
+			
+			m.start = new Position(Integer.parseInt(in.nextLine()), Integer.parseInt(in.nextLine()));
+			
+			in.nextLine(); //toss the extra space
+			
+			mazes.add(m);
+		}	
+		in.close();
+		return mazes;
+	}
+
 	private static boolean solveMaze(Maze m) {
 		
 		Position p = m.start;
